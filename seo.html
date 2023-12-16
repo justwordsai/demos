@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+  #list-urls, #webpage-select, #loader-text, #theme-select,
+   #theme-textbox, #output-tab, #form-api, #seo-loader {
+    display: none;
+  }
+</style>
+<body>
+</body>
+<footer>
+
+  <script type="text/javascript">
+
+  document.addEventListener("DOMContentLoaded", () => {
+  console.log('loaded')
+   const seoButton = document.getElementById('seo-button');
+   const websiteUrl = document.getElementById('website-url');
+   const listUrls = document.getElementById('list-urls');
+
+
+    // get seo code for specific themes
+   let count = 0;
+
+   // const seoTitleBefore = document.getElementById('seo-title-before');
+   // const seoTitleAfter = document.getElementById('seo-title-after');
+   // const seoDescriptionBefore = document.getElementById('seo-description-before');
+   // const seoDescriptionAfter = document.getElementById('seo-description-after');
+   // const seoLinkBefore = document.getElementById('seo-link-before');
+   // const seoLinkAfter = document.getElementById('seo-link-after');
+   // const apiButton = document.getElementById('api-button');
+   // const userEmailApiAccess = document.getElementById('user-email-api-access');
+   const webpageSelectText = document.getElementById('webpage-select');
+   // const loaderText = document.getElementById('loader-text');
+   const themeSelectText = document.getElementById('theme-select');
+   const themeTextbox = document.getElementById('theme-textbox');
+   const outputTab = document.getElementById('output-tab');
+   const formApi = document.getElementById('form-api');
+   const seoLoader = document.getElementById('seo-loader');
+
+    // to get all website urls
+    //TODO pick the top 3 and maybe display the total number
+   seoButton.addEventListener('click',  (evt) => {
+
+      seoLoader.style.display = "block";
+
+      getWebpages(websiteUrl.value ?? "https://getchoice.app")
+    	.then((response) => {
+          seoLoader.style.display = "none";
+      	  return response.json();
+          })
+       .then((urlList) => {
+            urlList.forEach(url => {
+                let li = document.createElement("li");
+                li.innerText = url
+                li.classList.add("list-item-copy")
+                listUrls.appendChild(li);
+
+                // add button click actions for each theme
+                li.addEventListener('click', (evt)=> {
+                    console.log('working')
+                    const webPageUrl = li.innerText;
+
+                    getThemes(webPageUrl ?? "https://getchoice.app")
+                    .then((response) => {
+                        seoLoader.style.display = "none";
+                        return response.json();
+                    })
+                    .then((json) => {
+                        console.log(json)
+                        const themes = json.themes
+                        const keywords = json.keywords
+                        
+
+                        const selectedThemes = [];
+
+                        // create theme buttons
+                        for (let theme of themes){
+                            let themeButton = document.createElement("a")
+                            themeButton.classList.add("theme-buttons")
+                            themeButton.classList.add("w-button")
+                            themeButton.innerText = theme
+                            themeTextbox.appendChild(themeButton)
+
+                            // add event listener for each button
+                            themeButton.addEventListener('click',  (evt) => {
+                                evt.preventDefault();
+                                selectedThemes.push(themeButton.innerText)
+                                if(selectedThemes.length >= 3){
+                                    console.log(selectedThemes)
+                                    seoLoader.style.display = "block";
+
+                                    payload = {
+                                        "themes": selectedThemes,
+                                        "keywords": keywords, // return all keywords of the page
+                                        "url": webPageUrl,
+                                    }
+
+                                    getSeo(payload)
+                                    .then((response) => {
+                                        seoLoader.style.display = "none";
+                                        return response.json();
+                                     }).then((json) => {
+                                        console.log(json)
+                                        themeTextbox.style.display = "block";
+                                        themeSelectText.style.display = "block";
+
+                                        // todo fill content here
+                                        const afterCodeBlock = document.getElementById("code-after")
+                                        const beforeCodeBlock = document.getElementById("code-before")
+
+                                        beforeCodeBlock.innerText = json.old_seo_as_html;
+                                        afterCodeBlock.innerText = json.as_html;
+                                        
+                                        Prism.highlightAll(); // highlight all code again!
+                                        outputTab.style.display = "block";
+                                    })
+                                     .catch((error) => {
+                                        console.log(error)
+                                        themeSelectText.innerText = "Whoops, our seo ninja's on a coffee break, try again will you?"
+                                    });
+                                 }
+                             });
+                        }
+                        
+                        // make theme buttons visible
+                        themeTextbox.style.display = "block";
+                        themeSelectText.style.display = "block";
+                     })
+                    .catch((error) => {
+                        console.log(error)
+                        themeSelectText.innerText = "Whoops, our seo ninja's on a coffee break, try again will you?"
+                        themeSelectText.style.display = "block";
+                    });
+                });
+            });
+            listUrls.style.display = "block";
+            webpageSelectText.style.display = "block";
+       })
+       .catch((error) => {
+  		    console.log(error)
+            webpageSelectText.innerText = "Whoops, our seo ninja's on a coffee break"
+		});
+        //call a post api with text input
+        console.log(webpageSelectText.innerText)
+    });
+
+function getWebpages(websiteUrl) {
+    return fetch("https://choiceserver.duckdns.org:8000/api/v1/get_pages", {
+        method: "POST",
+        body: JSON.stringify({
+            "url": websiteUrl
+        }),
+        headers: {
+            "Content-type": "application/json"
+        }
+	})
+}
+
+function getThemes(websiteUrl) {
+    return fetch("https://choiceserver.duckdns.org:8000/api/v1/get_themes", {
+        method: "POST",
+        body: JSON.stringify({
+            "url": websiteUrl
+        }),
+        headers: {
+            "Content-type": "application/json"
+        }
+	})
+}
+
+function getSeo(payload) {
+    return fetch("https://choiceserver.duckdns.org:8000/api/v1/get_seo", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+            "Content-type": "application/json"
+        }
+	})
+}
+});
+
+</script>
+</footer>
+</html>
