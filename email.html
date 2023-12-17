@@ -7,19 +7,127 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid">
 <div class="row">
     <div class="col-4 border-end">
         <!-- Button trigger modal -->
-        <div class="row p-3">
-            <div class="form-group">
-            <label for="brand-guidelines-button">Brand and Voice</label>
-            <br/>
-            <button type="button" id="brand-guidelines-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Update Brand Guidelines</button>
+        <div class="row p-2">
+            <div class="form-group form-group-lg">
+                <label for="brand-guidelines-button"><strong>Brand and Voice</strong></label>
+                <br/>
+                <button type="button" id="brand-guidelines-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Update Brand Guidelines</button>
             </div>
         </div>
 
-        <!-- Modal -->
+        <div class="row p-2">
+            <label for="email-description"><strong>Describe your email</strong></label>
+            <div class="form-group">
+                <textarea id="email-description" class="form-control form-control-sm" rows="4" placeholder="Describe your email"></textarea>
+            </div>
+        </div>
+
+        <table class="table" name="personalization-elements">
+            <thead>
+                <tr>
+                    <th scope="col">Personalization Key</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pet Name</td>
+                    <td>
+                        <div class="form-group">
+                            <input id="pet-name" class="form-control form-control-sm" name="pet-name" value="Valentine" placeholder="Pet Name" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pet Breed</td>
+                    <td>
+                        <div class="form-group">
+                            <input id="pet-breed" class="form-control form-control-sm" name="pet-breed" value="Australian Cattle Dog" placeholder="Pet Breed" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td>
+                        <div class="form-group">
+                            <input id="first-name" class="form-control form-control-sm" name="first-name"   value="Neha" placeholder="First Name" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pickup City</td>
+                    <td>
+                        <div class="form-group">
+                            <input id="pickup-city" class="form-control form-control-sm" name="pickup-city"   value="Miami" placeholder="Pickup City" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Dropoff City</td>
+                    <td>
+                        <div class="form-group">
+                            <input id="dropoff-city" class="form-control form-control-sm" name="dropoff-city"   value="San Francisco" placeholder="Pickup City" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row p-2">
+            <div class="dropdown">
+                <label for="tone">Tone:</label>
+                  <select name="tone" id="tone" class="btn btn-default dropdown-toggle">
+                    <option value="formal">Formal</option>
+                    <option value="vibrant">Vibrant</option>
+                    <option value="casual">Casual</option>
+                  </select>
+            </div>
+        </div>
+        
+        <div class="row p-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" checked id="apply-safety-filter">
+                <label class="form-check-label" for="apply-safety-filter">Apply Safety Filters</label>
+            </div>
+        </div>
+
+        <div class="row p-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="apply-nsfw-filter">
+                <label class="form-check-label" for="apply-nsfw-filter">Apply NSFW Filters</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <div class="row align-self-center">
+            <h2>Personalize Email Title</h2>
+        </div>
+        <div class="row d-flex">
+            <div class="row justify-content-center">
+                <div id="spinner" class="spinner-border text-primary d-none" role="status"></div><h4 id="generated-email-h4">Let's get you a worthy title!</h4>
+            </div>
+            <div class="row justify-content-center">
+                <div id="generated-email-body"></div>
+            </div>   
+            <div class="row justify-content-center">
+                <div id="feedback-instruction-col" class="col d-none">
+                    <div class="form-group">
+                        <input id="feedback-instruction" class="form-control" name="feedback-instruction" placeholder="Feedback to iterate" />
+                    </div>
+                </div>
+                <div class="col">
+                    <button id="generate-email-button" type="button" class="btn btn-primary">✨ Generate Title ✨</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -40,63 +148,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div class="form-group">
-            <input id="email-subject" class="form-control form-control-sm" name="email-subject" value="Email Subject" size="50" placeholder="Email Subject" />
-        </div> -->
-        <div class="row p-3">    
-            <div class="form-group">
-                <textarea id="email-body" class="form-control form-control-sm" rows="4" placeholder="Describe the purpose of your email"></textarea>
-            </div>
-        </div>
-        <div class="row p-2">
-            <div class="dropdown">
-                <label for="tone">Tone:</label>
-                  <select name="tone" id="tone" class="btn btn-default dropdown-toggle">
-                    <option value="formal">Formal</option>
-                    <option value="vibrant">Vibrant</option>
-                    <option value="casual">Casual</option>
-                  </select>
-            </div>
-        </div>
-        
-        <div class="row p-2">
-            <div class="dropdown">
-                <label for="last_immediate_need">Goal:</label>
-                  <select name="last_immediate_need" id="last_immediate_need" class="btn btn-default dropdown-toggle">
-                    <option value="immediate">Immediate</option>
-                    <option value="1 week">1 week</option>
-                    <option value="casual">Casual</option>
-                  </select>    
-            </div>
-        </div>
-        
-        <div class="row p-2">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" checked id="apply-safety-filter">
-                <label class="form-check-label" for="apply-safety-filter">Apply Safety Filters</label>
-            </div>
-        </div>
-
-        <div class="row p-2">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="apply-nsfw-filter">
-                <label class="form-check-label" for="apply-nsfw-filter">Apply NSFW Filters</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="col d-flex flex-column align-self-center">
-        <div class="row align-self-center">
-            <div id="spinner" class="spinner-border text-primary d-none" role="status"></div><h4 id="generated-email-h4">Let's get you a worthy title!</h4>
-        </div>
-        <div class="row align-self-center">
-            <div id="generated-email-body"></div>
-        </div>   
-        <div class="row align-self-center">
-            <button id="generate-email-button" type="button" class="btn btn-primary">✨ Generate Title ✨</button>
-        </div>
-    </div>
 </div>
 </div>
 
@@ -116,16 +167,21 @@
     }
 
     function generate_email(business_name){
-        const subject = $("#email-subject").val();
-        const body = $("#email-body").val();
+        const subject = $("#generated-email-h4").text().trim();
+        const description = $("#email-description").val().trim();
 
         data = {
             "subject": subject,
-            "body": body,
+            "body": description,
             "business_name": business_name,
-            "brand_guidelines": $("#brand-guidelines").val(),
+            "brand_guidelines": $("#brand-guidelines").val().trim(),
             "tone": $("#tone").val(),
-            "last_immediate_need": $("#last_immediate_need").val()
+            "animal_name": $("#pet-name").val().trim(),
+            "first_name": $("#first-name").val().trim(),
+            "animal_breed": $("#pet-breed").val().trim(),
+            "last_pickup_city": $("#pickup-city").val().trim(),
+            "last_delivery_city": $("#dropoff-city").val().trim(),
+            "feedback_instruction": $("#feedback-instruction").val().trim()
         }
 
         return $.ajax({
@@ -141,10 +197,12 @@
             complete: function(){
                 $("#spinner").removeClass('d-inline-block');
                 $("#spinner").addClass('d-none');
+
+                $("#feedback-instruction-col").removeClass('d-none');
+                $("#feedback-instruction-col").addClass('d-block');
             },
             success: function(result){
                 const subject = result.subject;
-                // const body = result.body;
                 const reasons = result.reasons;
                 let reasons_html = [];
                 reasons.forEach((reason)=>{
@@ -160,7 +218,6 @@
     }
 
     function generate_reason_html(reason){
-        console.log(reason);
         check_mark_html="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"green\" class=\"bi bi-check-circle\" viewBox=\"0 0 16 16\"><path d=\"M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16\"/><path d=\"M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05\"/></svg> ";
         check_mark_html = "<p>" + check_mark_html + reason + "</p>";
         return check_mark_html
