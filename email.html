@@ -105,9 +105,9 @@
 
     <div class="col d-flex flex-column">
         <div class="row align-self-center">
-            <h2>Personalize Email Title</h2>
+            <h2>Personalize Email Subject</h2>
         </div>
-        <div class="row d-flex">
+        <div class="row d-flex align-self-center">
             <div class="row justify-content-center">
                 <div id="spinner" class="spinner-border text-primary d-none" role="status"></div><h4 id="generated-email-h4">Let's get you a worthy title!</h4>
             </div>
@@ -156,7 +156,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 
-    const API_BASE_URL = "https://choiceserver.duckdns.org:8000/api/v1/";
+    // const API_BASE_URL = "https://choiceserver.duckdns.org:8000/api/v1/";
+    const API_BASE_URL = "http://127.0.0.1:8000/api/v1/";
 
     function fetch_brand_guidelines(business_name){
         const url = API_BASE_URL + "get_brand_guidelines/" + business_name;
