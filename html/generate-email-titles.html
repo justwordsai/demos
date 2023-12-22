@@ -313,8 +313,7 @@
       carouselItem.append(headingLarge);
       
       const keys_to_check = ["personalization_tags", "brand_guidelines", "tone"];
-      let followed_reasons = [];
-      let not_followed_reasons = [];
+      let reasons = [];
       for (const key of keys_to_check){
         if (key in evaluation) {
           const followed = evaluation[key]["followed"];
@@ -327,18 +326,17 @@
             let leadParagraph = $('<p class="lead text-white text-start opacity-8 fadeIn3 fadeInBottom"></p>');
             const text = cross + " " + key + ": " + not_followed;
             leadParagraph.html(text);
-            not_followed_reasons.push(leadParagraph);
+            reasons.push(leadParagraph);
           } else if (is_valid_followed){
             let leadParagraph = $('<p class="lead text-white text-start opacity-8 fadeIn3 fadeInBottom"></p>');
             const text = check + " " + key + ": " + followed;
             leadParagraph.html(text);
-            followed_reasons.push(leadParagraph);
+            reasons.push(leadParagraph);
           }
         }
       }
 
-      carouselItem.append(followed_reasons);
-      carouselItem.append(not_followed_reasons);
+      carouselItem.append(reasons);
 
       return carouselItem;
     }
